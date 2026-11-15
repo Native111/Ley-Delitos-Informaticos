@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ley de delitos informáticos · Consulta interactiva</title>
+  <meta name="description" content="Interfaz de consulta de la Ley Especial contra los Delitos Informáticos de Venezuela. Busca por número de artículo o palabra clave." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffcc00' d='M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <!-- Fondo por capas -->
+  <div class="bg-layer bg-glow"></div>
+  <div class="bg-layer bg-grid"></div>
+  <div class="bg-layer bg-noise"></div>
+
+  <!-- Navbar -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#top" id="brandLink">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z" fill="#ffcc00" opacity="0.9"/><path d="M9.5 12.2 11.3 14l3.4-3.6" stroke="#06122e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="brand-text"><b>Ley de Delitos Informáticos</b><span>Venezuela · 2001</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#top" data-nav="top" class="active">Inicio</a>
+        <a href="#explorar" data-nav="explorar">Explorar</a>
+        <a href="#explorar" data-nav="indice" id="navIndice">Índice</a>
+      </nav>
+      <a class="nav-pdf" href="ley-especial-contra-los-delitos-informaticos.pdf" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="1.7"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="1.7"/></svg>
+        PDF original
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <canvas id="rain"></canvas>
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <span class="hero-eyebrow"><span class="dot"></span> República Bolivariana de Venezuela</span>
+        <h1>Ley de <span class="grad">delitos informáticos</span></h1>
+        <p class="hero-desc" id="heroDesc"></p>
+        <div class="hero-stats" id="heroStats"></div>
+
+        <div class="search-wrap">
+          <div class="search-box">
+            <svg class="mag" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <input id="heroSearch" type="text" autocomplete="off" spellcheck="false"
+              placeholder="Busca un artículo: «6», «artículo 14», «fraude», «privacidad»…"
+              aria-label="Buscar artículos de la ley" />
+            <button class="search-clear" id="heroClear" aria-label="Limpiar búsqueda">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <button class="search-go" id="heroGo"><span>Buscar</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" style="display:none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div class="suggest" id="suggest"></div>
+          <p class="search-hint">Escribe un número de artículo o una palabra clave y presiona <kbd>Enter</kbd>. Usa <kbd>↑</kbd> <kbd>↓</kbd> para navegar las sugerencias.</p>
+          <div class="quick-chips" id="quickChips"></div>
+        </div>
+      </div>
+
+      <div class="hero-art">
+        <img src="delitos-informaticos-venezuela.png" alt="Póster alusivo a los delitos informáticos con la bandera de Venezuela" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Contenido principal -->
+  <main class="main" id="explorar">
+    <div class="container layout">
+      <!-- Índice lateral -->
+      <aside class="sidebar" id="sidebar">
+        <div class="index-card">
+          <div class="index-head">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <b>Índice de la ley</b>
+          </div>
+          <div class="index-scroll" id="indexScroll"></div>
+        </div>
+      </aside>
+
+      <!-- Columna de contenido -->
+      <section class="content">
+        <div class="toolbar">
+          <button class="btn-index-mobile" id="btnIndexMobile">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Índice
+          </button>
+          <div class="toolbar-search">
+            <div class="search-box">
+              <svg class="mag" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <input id="toolSearch" type="text" autocomplete="off" spellcheck="false" placeholder="Buscar artículo o palabra clave…" aria-label="Buscar artículos" />
+              <button class="search-clear" id="toolClear" aria-label="Limpiar búsqueda">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
+              <button class="search-go" id="toolGo"><span>Buscar</span></button>
+            </div>
+          </div>
+          <div class="filters" id="filters"></div>
+        </div>
+
+        <div class="context-line" id="contextLine"></div>
+        <div id="contentArea"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer con marca de agua -->
+  <footer class="footer">
+    <div class="footer-watermark"><span>Creado por: Consorcioweb</span></div>
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z" fill="#ffcc00" opacity="0.9"/><path d="M9.5 12.2 11.3 14l3.4-3.6" stroke="#06122e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <b>Ley Especial contra los Delitos Informáticos</b>
+      </div>
+      <p class="footer-note">Interfaz de consulta con fines educativos e informativos. Texto transcrito de la Gaceta Oficial de la República Bolivariana de Venezuela. Promulgada el 4 de septiembre de 2001.</p>
+      <div class="footer-credit"><span class="heart">◆</span> Creado por: <b>Consorcioweb</b></div>
+      <div class="footer-links">
+        <a href="#top">Inicio</a>
+        <a href="#explorar">Explorar la ley</a>
+        <a href="ley-especial-contra-los-delitos-informaticos.pdf" target="_blank" rel="noopener">Descargar PDF</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Drawer móvil -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="ley-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
