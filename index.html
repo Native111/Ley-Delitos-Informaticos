@@ -31,6 +31,11 @@
         <a href="#explorar" data-nav="explorar">Explorar</a>
         <a href="#explorar" data-nav="indice" id="navIndice">Índice</a>
       </nav>
+      <button class="nav-audio" id="navAudio" hidden aria-label="Detener lectura en voz alta">
+        <span class="nav-eq"><i></i><i></i><i></i></span>
+        <span class="nav-audio-txt">Leyendo</span>
+        <svg viewBox="0 0 24 24" fill="none"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg>
+      </button>
       <a class="nav-pdf" href="ley-especial-contra-los-delitos-informaticos.pdf" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="1.7"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="1.7"/></svg>
         PDF original
@@ -133,6 +138,89 @@
     </div>
   </footer>
 
+  <!-- Reproductor de lectura en voz alta -->
+  <div class="tts-player" id="ttsPlayer" aria-hidden="true" inert role="region" aria-label="Reproductor de lectura en voz alta">
+    <div class="tts-row">
+      <div class="tts-eq" id="ttsEq"><span></span><span></span><span></span><span></span></div>
+      <div class="tts-info">
+        <b id="ttsTitle">Artículo</b>
+        <span id="ttsSub">Leyendo en español</span>
+      </div>
+      <div class="tts-controls">
+        <button class="tts-btn tts-play" id="ttsPlay" aria-label="Pausar lectura">
+          <svg class="i-pause" viewBox="0 0 24 24" fill="none"><rect x="6" y="5" width="4" height="14" rx="1.3" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1.3" fill="currentColor"/></svg>
+          <svg class="i-play" viewBox="0 0 24 24" fill="none"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
+        </button>
+        <button class="tts-btn tts-stop" id="ttsStop" aria-label="Detener lectura">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg>
+        </button>
+      </div>
+      <div class="tts-opts">
+        <label class="tts-opt"><span>Velocidad</span>
+          <select id="ttsRate" aria-label="Velocidad de lectura">
+            <option value="0.75">0.75×</option>
+            <option value="1" selected>1×</option>
+            <option value="1.25">1.25×</option>
+            <option value="1.5">1.5×</option>
+            <option value="2">2×</option>
+          </select>
+        </label>
+        <label class="tts-opt"><span>Voz</span>
+          <select id="ttsVoice" aria-label="Voz en español del navegador"></select>
+        </label>
+        <button class="tts-detect" id="ttsDetect" type="button" title="Buscar voces en español del navegador" aria-label="Detectar voces en español del navegador">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v4h-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Detectar</span>
+        </button>
+      </div>
+      <button class="tts-close" id="ttsClose" aria-label="Cerrar reproductor">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="tts-track"><div class="tts-bar" id="ttsBar"></div></div>
+    <div class="tts-meta">
+      <span id="ttsSeg">Fragmento 1 de 1</span>
+      <span class="tts-voice-status">
+        <span id="ttsVoiceNote"></span>
+        <button class="tts-help-link" id="ttsVoiceHelp" type="button" hidden>Instalar voz en español</button>
+      </span>
+    </div>
+  </div>
+
+  <!-- Ayuda: voz en español del navegador -->
+  <dialog class="voice-help" id="voiceHelp" aria-labelledby="voiceHelpTitle">
+    <div class="vh-head">
+      <span class="vh-badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M11 5 6 9H3v6h3l5 4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </span>
+      <div class="vh-titles">
+        <h2 id="voiceHelpTitle">Voz en español del navegador</h2>
+        <p>La lectura usa por defecto la voz en español que ofrece el navegador.</p>
+      </div>
+      <button class="vh-close" id="voiceHelpClose" type="button" aria-label="Cerrar ayuda">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="vh-body">
+      <p class="vh-status" id="voiceHelpStatus" role="status"></p>
+      <ol class="vh-steps">
+        <li><b>Abre la configuración de Windows</b> con <kbd>Win</kbd> + <kbd>I</kbd> y entra en <b>Hora e idioma</b> → <b>Idioma y región</b>.</li>
+        <li>En <b>Español (Latinoamérica)</b> — ya figura en tu lista de idiomas — pulsa <b>⋯</b> → <b>Opciones de idioma</b>.</li>
+        <li>En el apartado <b>Voz</b> (texto a voz) pulsa <b>Descargar</b>. Si Windows pide permisos de administrador, acéptalos: sin ellos la voz no se instala.</li>
+        <li>Vuelve a esta interfaz y pulsa <b>Detectar voces</b>. En cuanto el navegador exponga una voz en español, la lectura la adopta automáticamente.</li>
+      </ol>
+      <p class="vh-alt"><b>Alternativa (Windows 11):</b> Configuración → Accesibilidad → Narrador → <i>Agregar voces naturales</i> en español. Tras instalarla, cierra y vuelve a abrir esta interfaz para que el navegador la reconozca.</p>
+      <p class="vh-fallback"><b>Mientras tanto:</b> la interfaz lee con la voz en español neutral instalada en la carpeta <code>voz/</code> (funciona sin conexión), para que el texto nunca se lea en inglés. Puedes elegirla manualmente en el selector <b>Voz</b>.</p>
+    </div>
+    <div class="vh-actions">
+      <button class="btn primary" id="voiceHelpDetect" type="button">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v4h-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Detectar voces ahora
+      </button>
+      <button class="btn" id="voiceHelpOk" type="button">Entendido</button>
+    </div>
+  </dialog>
+
   <!-- Drawer móvil -->
   <div class="drawer-overlay" id="drawerOverlay"></div>
 
@@ -141,6 +229,15 @@
     <svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <span id="toastMsg"></span>
   </div>
+
+  <!-- Voz en español neutral de respaldo (offline, eSpeak es-la) -->
+  <script>window.module = { exports: {} };</script>
+  <script src="voz/ESpeak.js"></script>
+  <script>window.__ESpeakFactory = window.module.exports; window.module = { exports: {} }; window.require = function () { return window.__ESpeakFactory; };</script>
+  <script src="voz/mespeak.js"></script>
+  <script src="voz/config.js"></script>
+  <script src="voz/es-la.js"></script>
+  <script>window.meSpeak = window.module.exports; delete window.module; delete window.require; delete window.__ESpeakFactory;</script>
 
   <script src="ley-data.js"></script>
   <script src="app.js"></script>
